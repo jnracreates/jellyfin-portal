@@ -13,7 +13,7 @@ main, .page, .layout, .content {
 
 html {
     background-color: var(--jf-bg) !important;
-    font-size: 20px !important;
+    font-size: 125% !important;
 }
 
 html, body {
