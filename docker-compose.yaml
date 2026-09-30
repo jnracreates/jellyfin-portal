@@ -1,4 +1,3 @@
-cat > docker-compose.yaml << 'EOF'
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -14,4 +13,3 @@ services:
       PUID: 1000
       PGID: 1000
     restart: unless-stopped
-EOF

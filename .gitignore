@@ -1,4 +1,8 @@
-cat > .gitignore << 'EOF'
+# Environment files (may contain secrets)
+.env
+.env.*
+!.env.example
+
 # Local overrides
 config/*.local.yaml
 config/*.local.js
@@ -11,4 +15,3 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
-EOF
