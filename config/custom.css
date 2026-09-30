@@ -17,9 +17,15 @@ html {
 }
 
 html, body {
-    overflow-x: clip !important;
+    overflow-x: hidden !important;  /* fallback */
     max-width: 100vw !important;
     width: 100% !important;
+}
+
+@supports (overflow-x: clip) {
+    html, body {
+        overflow-x: clip !important;
+    }
 }
 
 body, #__next, #app, #root, main,
