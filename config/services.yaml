@@ -1,5 +1,3 @@
-cat > config/services.yaml << 'EOF'
----
 - Status:
     - Jellyfin:
         icon: jellyfin.png
@@ -21,7 +19,7 @@ cat > config/services.yaml << 'EOF'
 
     - Jellyfin Uptime:
         icon: jellyfin.png
-        href: "http://YOUR_UPTIME_LAN_IP:3001/status/YOUR_MONITOR_SLUG"
+        href: "#"
         description: Uptime Monitor
 
 - Media:
@@ -45,4 +43,3 @@ cat > config/services.yaml << 'EOF'
         icon: /icons/logo2.png
         href: https://youtube.example.com
         description: Add Youtube channels/videos to private Jellyfin library.
-EOF
