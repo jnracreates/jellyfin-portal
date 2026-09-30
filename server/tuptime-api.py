@@ -18,8 +18,10 @@ class TuptimeHandler(BaseHTTPRequestHandler):
             return
 
         try:
+            import time as _time
+            seven_days_ago = int(_time.time()) - (7 * 86400)
             result = subprocess.run(
-                ["tuptime", "--csv"],
+                ["tuptime", "--csv", "--tsince", str(seven_days_ago)],
                 capture_output=True, text=True, check=True, timeout=10
             )
             csv = result.stdout
