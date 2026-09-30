@@ -1,0 +1,17 @@
+cat > docker-compose.yaml << 'EOF'
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    ports:
+      - 3000:3000
+    volumes:
+      - ./config:/app/config
+      - ./config/public/icons:/app/public/icons:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: "homepage.example.com,localhost:3000,192.168.1.100:3000"
+      PUID: 1000
+      PGID: 1000
+    restart: unless-stopped
+EOF

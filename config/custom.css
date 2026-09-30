@@ -1,0 +1,534 @@
+cat > config/custom.css << 'EOF'
+:root {
+    --jf-purple: #aa5cc3;
+    --jf-blue:   #00a4dc;
+    --jf-bg:     #0a0a0d;
+}
+
+html, body, #__next, #app, #root,
+body > div, body > div > div,
+main, .page, .layout, .content {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+html {
+    background-color: var(--jf-bg) !important;
+    font-size: 20px !important;
+}
+
+html, body {
+    overflow-x: clip !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+}
+
+body, #__next, #app, #root, main,
+body > div, body > div > div, body > div > div > div,
+main > *, main > * > *, main > * > * > *,
+.layout, .content, .page {
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+}
+
+html::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: var(--jf-purple);
+    -webkit-mask-image: url("https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/jellyfin.svg");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center center;
+    -webkit-mask-size: min(80vw, 80vh);
+    mask-image: url("https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/jellyfin.svg");
+    mask-repeat: no-repeat;
+    mask-position: center center;
+    mask-size: min(80vw, 80vh);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+}
+
+main, #__next, #app, #root, body > div {
+    position: relative;
+    z-index: 1;
+}
+
+body, p, span, div, a, li, h1, h2, h3, h4 {
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+}
+
+#page_title, h1, .page-title {
+    background: linear-gradient(100deg, var(--jf-purple), var(--jf-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    font-size: 2rem !important;
+}
+
+li:has(a[href*="example.com"]) :is(h2, h3, h4, strong, b) {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+}
+
+main {
+    position: relative;
+    z-index: 2;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1rem clamp(1rem,3vw,2rem) .5rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+footer, .footer, #footer,
+[class*="footer"], [class*="Footer"] {
+    display: none !important;
+}
+
+ul:has(> li a[href*="example.com"]) {
+    display: grid !important;
+    gap: 1.25rem !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 1080px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    list-style: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+ul:has(> li a[href*="stream.example.com"]) {
+    grid-template-columns: minmax(0, 380px) !important;
+    margin-bottom: 0 !important;
+}
+
+ul:has(> li a[href*="requests.example.com"]) {
+    max-width: 900px !important;
+}
+
+ul:has(> li a[href*="requests.example.com"])::after {
+    content: "Your Jellyfin login works on all services.";
+    grid-column: 1 / -1;
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.7rem !important;
+    font-weight: 700 !important;
+    color: #eceef2;
+    letter-spacing: .01em;
+    line-height: 1.4;
+}
+
+[id^="headlessui-disclosure-panel"] {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+}
+
+[id^="headlessui-disclosure-panel"] > div:first-child,
+[id^="headlessui-disclosure-panel"] > h2,
+[id^="headlessui-disclosure-panel"] > header {
+    margin-top: 0 !important;
+    margin-bottom: .5rem !important;
+}
+
+li:has(a[href*="example.com"]) {
+    aspect-ratio: 1 / 1 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 1rem !important;
+    gap: .75rem !important;
+    box-sizing: border-box !important;
+    list-style: none !important;
+    border: 1px solid rgba(170, 92, 195, 0.3) !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    transition: border-color .18s ease, box-shadow .18s ease !important;
+}
+
+li:has(a[href*="example.com"]):hover {
+    border-color: rgba(170, 92, 195, 0.7) !important;
+    box-shadow: 0 12px 40px -12px rgba(170, 92, 195, 0.45) !important;
+}
+
+li:has(a[href*="example.com"]) > div,
+li:has(a[href*="example.com"]) > div > div {
+    display: contents !important;
+}
+
+li:has(a[href*="example.com"]) > div > div > a[href*="example.com"] {
+    flex: 1 1 0 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+li:has(a[href*="example.com"]) > div > div > a[href*="example.com"] img,
+li:has(a[href*="example.com"]) > div > div > a[href*="example.com"] svg {
+    width: auto !important;
+    height: auto !important;
+    max-width: 65% !important;
+    max-height: 65% !important;
+    object-fit: contain !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+li:has(a[href*="example.com"]) > div > div > :not(a) {
+    flex: 1 1 0 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    text-align: center !important;
+    overflow: hidden !important;
+}
+
+li:has(a[href*="example.com"]) *,
+li:has(a[href*="example.com"]) *::before,
+li:has(a[href*="example.com"]) *::after {
+    text-align: center !important;
+    justify-content: center !important;
+    justify-items: center !important;
+    align-items: center !important;
+    align-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    left: auto !important;
+    right: auto !important;
+    direction: ltr !important;
+}
+
+li:has(a[href*="example.com"]) > div > div > :not(a) {
+    width: 100% !important;
+    flex: 1 1 auto !important;
+}
+
+@media (max-width: 768px) {
+    ul:has(> li a[href*="example.com"]) {
+        grid-template-columns: minmax(0, 1fr) !important;
+        max-width: 100% !important;
+    }
+
+    ul:has(> li a[href*="requests.example.com"])::after {
+        font-size: 1.35rem !important;
+    }
+}
+
+#jf-latest-row {
+    width: min(1080px, calc(100vw - 2rem)) !important;
+    max-width: min(1080px, calc(100vw - 2rem)) !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    margin: 1rem auto 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+.jf-latest-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #eceef2;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.jf-latest-scroll {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+    gap: 1rem;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0 1rem .75rem 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(170, 92, 195, 0.5) transparent;
+    width: min(1080px, calc(100vw - 2rem)) !important;
+    max-width: min(1080px, calc(100vw - 2rem)) !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+}
+
+.jf-latest-scroll::-webkit-scrollbar { height: 6px; }
+.jf-latest-scroll::-webkit-scrollbar-thumb {
+    background: rgba(170, 92, 195, 0.5);
+    border-radius: 3px;
+}
+
+.jf-latest-item {
+    flex: 0 0 auto !important;
+    width: 160px !important;
+    min-width: 160px !important;
+    max-width: 160px !important;
+    text-decoration: none !important;
+    color: #eceef2 !important;
+    transition: transform .18s ease;
+}
+
+.jf-latest-item:hover { transform: scale(1.06); }
+
+.jf-latest-item img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+    border: 1px solid rgba(170, 92, 195, 0.25);
+    background: rgba(255,255,255,.03);
+    display: block;
+}
+
+.jf-latest-title {
+    margin-top: .35rem;
+    font-size: .8rem;
+    font-weight: 600;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.w-full.h-full.overflow-auto,
+.container.relative.m-auto {
+    overflow-x: hidden !important;
+}
+
+html, body {
+    overflow-x: hidden !important;
+}
+
+html, body {
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100vh !important;
+}
+
+.w-full.h-full.overflow-auto {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+}
+
+.container.relative.m-auto {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.services-group:has(li[data-name="Jellyfin Uptime"]) > button {
+    display: none !important;
+}
+
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-icon,
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-description {
+    display: none !important;
+}
+
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-card {
+    padding: 0.4rem !important;
+    margin-bottom: 0.5rem !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0.25rem !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-name {
+    font-size: 0.8rem !important;
+    padding: 0.2rem 0.4rem !important;
+    line-height: 1.2 !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-block {
+    padding: 0.2rem !important;
+    margin: 0.1rem !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-block > div:first-child {
+    font-size: 0.95rem !important;
+    line-height: 1.1 !important;
+    font-weight: 300 !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-block > div:last-child {
+    font-size: 0.6rem !important;
+    line-height: 1.1 !important;
+    font-weight: 600 !important;
+}
+
+li[data-name="Jellyfin Uptime"] .service-container > .service-block:first-child > div:not(.service-title) {
+    display: none !important;
+}
+li[data-name="Jellyfin Uptime"] .service-container > .service-block:nth-child(2) {
+    display: none !important;
+}
+
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-name {
+    display: none !important;
+}
+
+#information-widgets {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    height: 0 !important;
+}
+
+#layout-groups {
+    margin-top: 0.5rem !important;
+}
+
+.services-group:has(li[data-name="Jellyfin Uptime"]) {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) > div {
+    margin-top: 0 !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .services-list {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) > button {
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#Jellyfin, #Jellyfin_Uptime,
+[id*="Jellyfin"] {
+    font-size: 0.75rem !important;
+}
+
+[id*="Jellyfin"] .widget,
+[id*="Jellyfin"] [class*="widget"] {
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+}
+
+[id*="Jellyfin"] [class*="widget"] *,
+[id*="Jellyfin"] .widget * {
+    font-size: 0.7rem !important;
+    line-height: 1.15 !important;
+}
+
+[id*="Jellyfin"] [class*="widget"] > div {
+    gap: 0.15rem !important;
+    padding: 0.15rem 0 !important;
+}
+
+.my-custom-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.4rem;
+    color: #888;
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+.my-custom-header p {
+    margin: 0;
+}
+
+.custom-uptime-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0.35rem auto 0 auto;
+    gap: 0.1rem;
+}
+.custom-uptime-badge .uptime-pct {
+    font-size: 1.4rem !important;
+    font-weight: 300 !important;
+    line-height: 1.1 !important;
+    color: #eceef2 !important;
+    letter-spacing: 0.02em;
+}
+.custom-uptime-badge .uptime-label {
+    font-size: 0.65rem !important;
+    font-weight: 400 !important;
+    line-height: 1.1 !important;
+    color: #888 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.service-group-name,
+.services-group > button {
+    display: none !important;
+}
+
+.service-block {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.services-group:has(li[data-name="Jellyfin Uptime"]) {
+    padding: 0 !important;
+    margin: 0 0 0.5rem 0 !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .services-list {
+    justify-content: center !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    margin: 0 auto !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+.services-group:has(li[data-name="Jellyfin Uptime"]) .service-card {
+    padding: 0.5rem 0.75rem !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+li[data-name="Jellyfin Uptime"] .service-container {
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+}
+
+li[data-name="Jellyfin"] .service-container {
+    justify-content: center !important;
+}
+EOF

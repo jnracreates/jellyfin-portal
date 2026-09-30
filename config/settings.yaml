@@ -1,0 +1,16 @@
+cat > config/settings.yaml << 'EOF'
+title: Jellyfin Portal
+theme: dark
+color: slate
+
+layout:
+  Status:
+    style: row
+    columns: 4
+  Media:
+    style: row
+    columns: 1
+  Services:
+    style: row
+    columns: 3
+EOF

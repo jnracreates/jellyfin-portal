@@ -1,0 +1,14 @@
+cat > .gitignore << 'EOF'
+# Local overrides
+config/*.local.yaml
+config/*.local.js
+config/*.local.css
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+EOF

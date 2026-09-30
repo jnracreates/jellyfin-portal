@@ -1,0 +1,48 @@
+cat > config/services.yaml << 'EOF'
+---
+- Status:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: "http://YOUR_JELLYFIN_LAN_IP:8096"
+        description: Media Server Stats
+        widget:
+          type: customapi
+          url: "http://YOUR_JELLYFIN_LAN_IP:8096/Items/Counts"
+          headers:
+            Authorization: 'MediaBrowser Token="YOUR_JELLYFIN_API_KEY"'
+          refreshInterval: 60000
+          mappings:
+            - field: MovieCount
+              label: Movies
+            - field: EpisodeCount
+              label: Episodes
+            - field: SongCount
+              label: Songs
+
+    - Jellyfin Uptime:
+        icon: jellyfin.png
+        href: "http://YOUR_UPTIME_LAN_IP:3001/status/YOUR_MONITOR_SLUG"
+        description: Uptime Monitor
+
+- Media:
+    - Jellyfin:
+        icon: jellyfin.png
+        href: https://stream.example.com
+        description: Stream movies, tv & music from anywhere.
+
+- Services:
+    - Seerr:
+        icon: overseerr.png
+        href: https://requests.example.com
+        description: Request movies and shows to be added to the library.
+
+    - DroppedNeedle:
+        icon: https://github.com/DroppedNeedle/DroppedNeedle/blob/main/Images/logo_icon.png?raw=true
+        href: https://music.example.com
+        description: A request based music streaming service.
+
+    - ytfinall:
+        icon: /icons/logo2.png
+        href: https://youtube.example.com
+        description: Add Youtube channels/videos to private Jellyfin library.
+EOF
