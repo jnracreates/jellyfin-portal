@@ -159,7 +159,8 @@ li:has(a[href*="example.com"]) {
     transition: border-color .18s ease, box-shadow .18s ease !important;
 }
 
-li:has(a[href*="example.com"]):hover {
+li:has(a[href*="example.com"]):hover,
+li:has(a[href*="example.com"]):focus-within {
     border-color: rgba(170, 92, 195, 0.7) !important;
     box-shadow: 0 12px 40px -12px rgba(170, 92, 195, 0.45) !important;
 }
@@ -531,3 +532,14 @@ li[data-name="Jellyfin"] .service-container {
     justify-content: center !important;
 }
 
+/* ========== REDUCED MOTION ========== */
+@media (prefers-reduced-motion: reduce) {
+    .jf-latest-item,
+    li:has(a[href*="example.com"]) {
+        transition: none !important;
+    }
+    .jf-latest-item:hover,
+    .jf-latest-item:focus-visible {
+        transform: none !important;
+    }
+}
