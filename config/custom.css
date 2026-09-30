@@ -36,11 +36,11 @@ html::before {
     position: fixed;
     inset: 0;
     background-color: var(--jf-purple);
-    -webkit-mask-image: url("https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/jellyfin.svg");
+    -webkit-mask-image: url("/icons/jellyfin.svg");
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center center;
     -webkit-mask-size: min(80vw, 80vh);
-    mask-image: url("https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/jellyfin.svg");
+    mask-image: url("/icons/jellyfin.svg");
     mask-repeat: no-repeat;
     mask-position: center center;
     mask-size: min(80vw, 80vh);

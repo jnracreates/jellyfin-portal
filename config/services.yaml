@@ -35,7 +35,7 @@
         description: Request movies and shows to be added to the library.
 
     - DroppedNeedle:
-        icon: https://github.com/DroppedNeedle/DroppedNeedle/blob/main/Images/logo_icon.png?raw=true
+        icon: /icons/droppedneedle.png
         href: https://music.example.com
         description: A request based music streaming service.
 
