@@ -65,11 +65,11 @@ A clean, custom homepage for a Jellyfin media server. Built with [Homepage](http
 
    | Placeholder | Description |
    |---|---|
-   | `YOUR_JELLYFIN_USER_ID` | Jellyfin user ID |
-   | `YOUR_MOVIES_LIBRARY_ID` | Jellyfin Movies library ID |
-   | `YOUR_TV_LIBRARY_ID` | Jellyfin TV library ID |
-   | `API_PROXY` | URL of your Jellyfin API proxy |
-   | `UPTIME_API` | URL of your uptime API proxy |
+   | `YOUR_JELLYFIN_USER_ID` | Jellyfin user ID ([how to find it](#finding-jellyfin-ids)) |
+   | `YOUR_MOVIES_LIBRARY_ID` | Jellyfin Movies library ID ([how to find it](#finding-jellyfin-ids)) |
+   | `YOUR_TV_LIBRARY_ID` | Jellyfin TV library ID ([how to find it](#finding-jellyfin-ids)) |
+   | `API_PROXY` | URL of your Jellyfin API proxy (set up in [The API Proxy](#the-api-proxy)) |
+   | `UPTIME_API` | URL of your uptime API proxy (set up in [Uptime Badge](#uptime-badge)) |
 
 5. Start it:
 
@@ -78,6 +78,65 @@ A clean, custom homepage for a Jellyfin media server. Built with [Homepage](http
    ```
 
 6. Open `http://YOUR_SERVER_IP:3000`.
+
+## Finding Jellyfin IDs
+
+`custom.js` needs three Jellyfin IDs: your user ID, the Movies library ID, and the TV library ID. All three can be pulled from the Jellyfin API with your API key.
+
+Set these two shell variables first, replacing the placeholders:
+
+```bash
+JF_URL="http://YOUR_JELLYFIN_LAN_IP:8096"
+JF_KEY="YOUR_JELLYFIN_API_KEY"
+```
+User ID
+List all users and find the one you log in with:
+```bash
+curl -s "$JF_URL/Users" -H "Authorization: MediaBrowser Token=\"$JF_KEY\"" | jq '.[] | {Name, Id}'
+```
+Example output:
+
+```json
+{ "Name": "jnra", "Id": "bfc078bc32084364a2466f2bf9a787b3" }
+```
+Copy the Id into YOUR_JELLYFIN_USER_ID.
+
+If you don't have jq installed, drop the | jq ... part — the raw JSON is still readable, just uglier.
+
+Library IDs
+
+List all top-level libraries:
+```bash
+curl -s "$JF_URL/Library/MediaFolders" -H "Authorization: MediaBrowser Token=\"$JF_KEY\"" | jq '.Items[] | {Name, Id}'
+```
+Example output:
+
+```json
+{ "Name": "Movies",  "Id": "f137a2dd21bbc1b99aa5c0f6bf02a805" }
+{ "Name": "TV Shows", "Id": "767bffe4f11c93ef34b805451a696a4e" }
+{ "Name": "Music",   "Id": "..." }
+```
+Copy the Id for Movies into YOUR_MOVIES_LIBRARY_ID, and the Id for TV Shows into YOUR_TV_LIBRARY_ID.
+
+If you only see library names but no IDs, or the list is empty, the API key you're using probably isn't an admin key. Generate a new one from Jellyfin Dashboard → API Keys → +.
+
+Alternative: find IDs in the Jellyfin UI
+
+If you'd rather not use curl, both IDs are visible in the web interface.
+
+User ID: log in as the user, open the browser DevTools (F12) → Network tab, and look at any request to /Users/.... The UUID in the URL is your user ID. Or go to Dashboard → Users, click the user, and look at the URL — it ends in the user's ID.
+
+Library IDs: click into a library in the sidebar, then look at the browser URL. It'll contain something like #/movies.html?topParentId=f137a2dd21bbc1b99aa5c0f6bf02a805. That UUID after topParentId= is the library ID.
+The other two values
+
+API_PROXY and UPTIME_API are the public URLs of the two Cloudflare Workers you deploy. You set them yourself:
+
+    API_PROXY — whatever custom domain you attach to the Jellyfin Worker (e.g. https://api.example.com). See The API Proxy.
+
+    UPTIME_API — whatever custom domain you attach to the uptime Worker (e.g. https://api-uptime.example.com). See Uptime Badge.
+
+Both are set up in the Cloudflare dashboard, not on your server, so there's no command to run to "find" them — you choose them when you configure the Worker.
+
 
 ## Custom Icons
 
