@@ -1,4 +1,3 @@
-cat > config/custom.css << 'EOF'
 :root {
     --jf-purple: #aa5cc3;
     --jf-blue:   #00a4dc;
@@ -531,4 +530,4 @@ li[data-name="Jellyfin Uptime"] .service-container {
 li[data-name="Jellyfin"] .service-container {
     justify-content: center !important;
 }
-EOF
+

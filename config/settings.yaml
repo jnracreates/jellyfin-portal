@@ -1,4 +1,3 @@
-cat > config/settings.yaml << 'EOF'
 title: Jellyfin Portal
 theme: dark
 color: slate
@@ -13,4 +12,4 @@ layout:
   Services:
     style: row
     columns: 3
-EOF
+

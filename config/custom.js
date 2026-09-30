@@ -1,4 +1,3 @@
-cat > config/custom.js << 'EOF'
 (function () {
     console.log("[jf-latest] script loaded");
 
@@ -150,4 +149,4 @@ cat > config/custom.js << 'EOF'
 
     buildUptimeBadge();
 })();
-EOF
+
