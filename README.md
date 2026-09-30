@@ -139,6 +139,27 @@ API_PROXY and UPTIME_API are the public URLs of the two Cloudflare Workers you d
 
 Both are set up in the Cloudflare dashboard, not on your server, so there's no command to run to "find" them — you choose them when you configure the Worker.
 
+## Changing the Domain
+
+`custom.css` uses `a[href*="example.com"]` selectors to identify specific tiles (the square-bordered "Media" and "Services" cards, the "requests" tagline, etc.). These selectors match against the `href` values in `services.yaml`.
+
+If you change the domain from `example.com` to your own, you must also update the corresponding selectors in `custom.css`, or the styling will not apply.
+
+Run a find/replace on `custom.css`:
+
+- `stream.example.com` → your Jellyfin URL host (e.g. `stream.mydomain.com`)
+- `requests.example.com` → your request service host
+- `example.com` → your domain (for any remaining matches)
+
+If different services use different domains, update each selector individually.
+
+Alternatively, if you don't want to be tied to specific domains, you can rewrite the selectors to match on tile names. For example, this rule targets any tile whose link contains "example.com":
+
+    li:has(a[href*="example.com"]) { ... }
+
+…could instead be targeted via `data-name` on the `li`, which Homepage sets from the service name in `services.yaml`. That's less brittle but requires rewriting the selectors throughout the file.
+
+
 
 ## Custom Icons
 
