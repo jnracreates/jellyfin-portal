@@ -50,6 +50,6 @@ class TuptimeHandler(BaseHTTPRequestHandler):
         return
 
 if __name__ == "__main__":
-    server = HTTPServer(("0.0.0.0", 5056), TuptimeHandler)
+    server = HTTPServer(("127.0.0.1", 5056), TuptimeHandler)
     print("Tuptime API server running on port 5056...")
     server.serve_forever()
