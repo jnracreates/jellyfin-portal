@@ -1,5 +1,3 @@
-<img width="1197" height="1256" alt="homepage3" src="https://github.com/user-attachments/assets/f6b31cf0-69ce-4bc9-bc79-24a7f446b346" />
-
 # Jellyfin Portal
 
 A clean, custom homepage for a Jellyfin media server. Built with [Homepage](https://github.com/gethomepage/homepage), custom CSS, and a small custom JS widget that shows recently added movies and TV series.
@@ -12,6 +10,8 @@ A clean, custom homepage for a Jellyfin media server. Built with [Homepage](http
 - "Recently Added" row pulling from Jellyfin
 - Accurate 7-day uptime percentage that survives reboots and power loss
 - Request service links (Seerr, music, YouTube, etc.)
+- Self-hosted icons — no third-party CDN requests on page load
+- Respects `prefers-reduced-motion` and user font-size preferences
 - Mobile-friendly layout
 
 ## Repository Layout
@@ -28,12 +28,15 @@ A clean, custom homepage for a Jellyfin media server. Built with [Homepage](http
 │   ├── custom.css
 │   ├── custom.js
 │   └── public/
-│       └── icons/              # local icons referenced as /icons/<file>
+│       └── icons/
+│           ├── jellyfin.svg       # background logo mask
+│           ├── droppedneedle.png  # service icon
+│           └── logo2.png          # service icon
 ├── server/
-│   └── tuptime-api.py          # local HTTP wrapper around tuptime
+│   └── tuptime-api.py             # local HTTP wrapper around tuptime
 └── worker/
-    ├── jellyfin-proxy.js       # Cloudflare Worker for the Jellyfin API
-    └── uptime-proxy.js         # Cloudflare Worker for the uptime API
+    ├── jellyfin-proxy.js          # Cloudflare Worker for the Jellyfin API
+    └── uptime-proxy.js            # Cloudflare Worker for the uptime API
 ```
 
 ## Requirements
@@ -91,26 +94,33 @@ Set these two shell variables first, replacing the placeholders:
 JF_URL="http://YOUR_JELLYFIN_LAN_IP:8096"
 JF_KEY="YOUR_JELLYFIN_API_KEY"
 ```
-User ID
+
+### User ID
+
 List all users and find the one you log in with:
+
 ```bash
 curl -s "$JF_URL/Users" -H "Authorization: MediaBrowser Token=\"$JF_KEY\"" | jq '.[] | {Name, Id}'
 ```
+
 Example output:
 
 ```json
-{ "Name": "jnra", "Id": "bfc078bc32084364a2466f2bf9a787b3" }
+{ "Name": "jellyfinuser", "Id": "bfc078bc32084364a2466f2bf9a787b3" }
 ```
-Copy the Id into YOUR_JELLYFIN_USER_ID.
 
-If you don't have jq installed, drop the | jq ... part — the raw JSON is still readable, just uglier.
+Copy the `Id` into `YOUR_JELLYFIN_USER_ID`.
 
-Library IDs
+If you don't have `jq` installed, drop the `| jq ...` part — the raw JSON is still readable, just uglier.
+
+### Library IDs
 
 List all top-level libraries:
+
 ```bash
 curl -s "$JF_URL/Library/MediaFolders" -H "Authorization: MediaBrowser Token=\"$JF_KEY\"" | jq '.Items[] | {Name, Id}'
 ```
+
 Example output:
 
 ```json
@@ -118,26 +128,18 @@ Example output:
 { "Name": "TV Shows", "Id": "767bffe4f11c93ef34b805451a696a4e" }
 { "Name": "Music",   "Id": "..." }
 ```
-Copy the Id for Movies into YOUR_MOVIES_LIBRARY_ID, and the Id for TV Shows into YOUR_TV_LIBRARY_ID.
 
-If you only see library names but no IDs, or the list is empty, the API key you're using probably isn't an admin key. Generate a new one from Jellyfin Dashboard → API Keys → +.
+Copy the `Id` for **Movies** into `YOUR_MOVIES_LIBRARY_ID`, and the `Id` for **TV Shows** into `YOUR_TV_LIBRARY_ID`.
 
-Alternative: find IDs in the Jellyfin UI
+If you only see library names but no IDs, or the list is empty, the API key you're using probably isn't an admin key. Generate a new one from **Jellyfin Dashboard** → **API Keys** → **+**.
+
+### Alternative: find IDs in the Jellyfin UI
 
 If you'd rather not use curl, both IDs are visible in the web interface.
 
-User ID: log in as the user, open the browser DevTools (F12) → Network tab, and look at any request to /Users/.... The UUID in the URL is your user ID. Or go to Dashboard → Users, click the user, and look at the URL — it ends in the user's ID.
+**User ID:** log in as the user, open the browser DevTools (**F12**) → **Network** tab, and look at any request to `/Users/...`. The UUID in the URL is your user ID. Or go to **Dashboard** → **Users**, click the user, and look at the URL — it ends in the user's ID.
 
-Library IDs: click into a library in the sidebar, then look at the browser URL. It'll contain something like #/movies.html?topParentId=f137a2dd21bbc1b99aa5c0f6bf02a805. That UUID after topParentId= is the library ID.
-The other two values
-
-API_PROXY and UPTIME_API are the public URLs of the two Cloudflare Workers you deploy. You set them yourself:
-
-    API_PROXY — whatever custom domain you attach to the Jellyfin Worker (e.g. https://api.example.com). See The API Proxy.
-
-    UPTIME_API — whatever custom domain you attach to the uptime Worker (e.g. https://api-uptime.example.com). See Uptime Badge.
-
-Both are set up in the Cloudflare dashboard, not on your server, so there's no command to run to "find" them — you choose them when you configure the Worker.
+**Library IDs:** click into a library in the sidebar, then look at the browser URL. It'll contain something like `#/movies.html?topParentId=f137a2dd21bbc1b99aa5c0f6bf02a805`. That UUID after `topParentId=` is the library ID.
 
 ## Changing the Domain
 
@@ -153,14 +155,6 @@ Run a find/replace on `custom.css`:
 
 If different services use different domains, update each selector individually.
 
-Alternatively, if you don't want to be tied to specific domains, you can rewrite the selectors to match on tile names. For example, this rule targets any tile whose link contains "example.com":
-
-    li:has(a[href*="example.com"]) { ... }
-
-…could instead be targeted via `data-name` on the `li`, which Homepage sets from the service name in `services.yaml`. That's less brittle but requires rewriting the selectors throughout the file.
-
-
-
 ## Custom Icons
 
 Local icons live in `config/public/icons/`. The `docker-compose.yaml` mounts that folder read-only into the container at `/app/public/icons`.
@@ -173,9 +167,9 @@ To reference a local icon in `services.yaml`, use the path `/icons/<filename>`:
     href: https://youtube.example.com
 ```
 
-The file `config/public/icons/logo2.png` in this repo is a placeholder. Replace it with your own, or change the `icon:` line in `services.yaml` to point at a remote URL (for example, a GitHub raw link or a CDN-hosted SVG from [dashboard-icons](https://github.com/walkxcode/dashboard-icons)).
+The files in `config/public/icons/` are self-hosted so that visitors' IPs aren't sent to third-party CDNs (jsDelivr, GitHub raw, etc.) on every page load. Replace them with your own assets, or add new ones alongside.
 
-Icons not placed in `config/public/icons/` should use either a URL (`https://...`) or one of Homepage's built-in icon names (`jellyfin.png`, `overseerr.png`, etc.).
+Icons not placed in `config/public/icons/` should use either a URL (`https://...`) or one of Homepage's built-in icon names (`jellyfin.png`, `overseerr.png`, etc.). Using a remote URL works but reintroduces the third-party request — prefer self-hosting when you can.
 
 ## Uptime Badge
 
@@ -218,10 +212,15 @@ Requires=tuptime.service
 
 [Service]
 Type=simple
-User=root
+User=_tuptime
+Group=_tuptime
 ExecStart=/usr/local/bin/tuptime-api.py
 Restart=on-failure
 RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target
@@ -237,10 +236,12 @@ sudo systemctl enable --now tuptime-api.service
 Verify locally:
 
 ```bash
-curl -s http://localhost:5056/uptime
+curl -s http://127.0.0.1:5056/uptime
 ```
 
 Should return `{"uptime_percentage": 100.0, "status": "ok"}`. The number will be `100.0` on a fresh install — it becomes meaningful after a few reboots.
+
+The script binds to `127.0.0.1` and runs as the unprivileged `_tuptime` user. Nothing on your LAN can reach it directly; only local processes and the Cloudflare Tunnel can.
 
 ### 3. Expose it via Cloudflare Tunnel
 
@@ -295,7 +296,7 @@ The `buildUptimeBadge()` function fetches this URL, reads `uptime_percentage`, a
 
 ### What the number means
 
-The percentage reflects how much of the last 7 days the host has been up, based on `tuptime`'s recorded boot and shutdown events. On a fresh install it will read `100.00%` until the machine experiences a real outage. `tuptime` does not distinguish between clean shutdowns and power loss; both count as downtime.
+The percentage reflects how much of the **last 7 days** the host has been up, based on `tuptime`'s recorded boot and shutdown events. On a fresh install it will read `100.00%` until the machine experiences a real outage. `tuptime` does not distinguish between clean shutdowns and power loss; both count as downtime.
 
 ## The API Proxy
 
@@ -303,7 +304,9 @@ The percentage reflects how much of the last 7 days the host has been up, based 
 
 The Worker:
 
-- Accepts requests only on `/Items` (and subpaths)
+- Accepts `GET` and `OPTIONS` requests only; returns `405` for anything else
+- Only forwards requests to a fixed allowlist of paths: `/Items`, `/Items/Counts`, and `/Items/{32-char-id}/Images/Primary`
+- Filters query parameters to a known-safe set (`userId`, `parentId`, `Recursive`, `IncludeItemTypes`, `SortBy`, `SortOrder`, `Limit`, `Fields`)
 - Injects the `Authorization` header from an encrypted secret
 - Returns CORS headers so the browser can call it
 
@@ -335,13 +338,25 @@ curl -s https://api.example.com/Items/Counts
 
 # Should return 404 (path blocked by allowlist)
 curl -s -o /dev/null -w "%{http_code}\n" https://api.example.com/System/Info
+
+# Should return 405 (method blocked)
+curl -s -X DELETE -o /dev/null -w "%{http_code}\n" https://api.example.com/Items/anything
 ```
+
+## Accessibility
+
+The stylesheet is written to respect a few common user preferences:
+
+- `font-size: 125%` on `html` scales with the user's browser default rather than forcing a fixed pixel size
+- `@media (prefers-reduced-motion: reduce)` disables the hover scale and transition effects
+- Interactive elements respond to `:focus-visible` so keyboard users get a visible outline
+- Poster images use `alt=""` to avoid double-announcing the title (the title is already visible text next to the image)
 
 ## Security Warning
 
 Never commit a real Jellyfin API key to a public repo. Anything in `custom.js` is delivered to the browser and readable by anyone who visits the page. Use a proxy, or omit the Recently Added section entirely.
 
-The API key in `services.yaml` is used server-side by Homepage and is less exposed, but if you plan to share the file publicly, use an environment variable reference instead:
+The API key in `services.yaml` is used server-side by Homepage and is not sent to the browser, but it still shouldn't be committed. Either leave it as `YOUR_JELLYFIN_API_KEY` in the repo and fill it in locally, or use Homepage's environment variable pattern:
 
 ```yaml
 headers:
