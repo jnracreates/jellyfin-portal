@@ -1,3 +1,6 @@
+<img width="1197" height="1256" alt="homepage3" src="https://github.com/user-attachments/assets/07532a01-5811-4244-b3b0-b293ac96fc40" />
+
+
 # Jellyfin Portal
 
 A clean, custom homepage for a Jellyfin media server. Built with [Homepage](https://github.com/gethomepage/homepage), custom CSS, and a small custom JS widget that shows recently added movies and TV series.
